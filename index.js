@@ -1,16 +1,34 @@
 import Kartya from "./Kartya.js";
+import { kepLista } from "./adatok.js";
+import Kartyak from "./Kartyak.js";
 
-const kepgaleria = [];
+const divElem = $(".kiskepek");
+const kivElem = $(".kivalasztott")
+const leftButton = $(".left")
+const rightButton = $(".right")
 
-const kepek = [
-    { utvonal: './Pictures/Dezi.jpg', cim: 'Dézi' },
-    { utvonal: './Pictures/Floki.jpg', cim: 'Floki' },
-    { utvonal: './Pictures/Jeno.jpg', cim: 'Jenő' }
-];
+new Kartyak(kepLista, divElem);
+var selectedKep = 0;
+new Kartya(kepLista[selectedKep], kivElem, selectedKep, true);
 
-const tartalomDiv = document.querySelector('.tartalom');
+$(window).on("kivalaszt",(event)=>{
+    console.log(event.detail)
+    kivElem.empty();
+    selectedKep = event.detail;
+    new Kartya(kepLista[selectedKep], kivElem, selectedKep, true)
+})
 
-kepek.forEach(kep => {
-    const ujKartya = new Kartya(kep, tartalomDiv);
-    kepgaleria.push(ujKartya);
-});
+$(leftButton).on("click",(event)=>{
+    if (selectedKep <=0) {return};
+    kivElem.empty();
+    selectedKep = selectedKep-1;
+    new Kartya(kepLista[selectedKep], kivElem, selectedKep, true)
+})
+
+$(rightButton).on("click",(event)=>{
+    if (selectedKep === kepLista.length-1) {return};
+    console.log("jobbra click", selectedKep)
+    kivElem.empty();
+    selectedKep = selectedKep+1;
+    new Kartya(kepLista[selectedKep], kivElem, selectedKep, true)
+})
